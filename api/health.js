@@ -1,1 +1,0 @@
-export default function handler(req,res){res.status(200).json({ok:true,service:'Alquiler Ordenadores Madrid API',node:process.version})}

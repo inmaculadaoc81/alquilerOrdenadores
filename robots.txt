@@ -1,4 +1,3 @@
 User-agent: *
 Allow: /
-Disallow: /api/
-Sitemap: https://alquilerordenadoresmadrid.es/sitemap.xml
+Sitemap: http://alquilerordenadoresmadrid.es/sitemap.xml
