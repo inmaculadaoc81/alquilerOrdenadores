@@ -38,6 +38,30 @@ REVISIÓN (fixes aplicados en esta pasada):
   número, +34 910 05 36 51) y añadido white-space:nowrap como
   salvaguarda. El botón grande .cta.phone del hero conserva su texto
   completo.
+
+REVISIÓN ADICIONAL (checklist unificado de la familia, a petición del cliente):
+- H1 verificado: "Necesitas un ordenador ya. Aquí te lo entregamos hoy
+  mismo." es afirmativo, corto y no repite la plantilla "no funciona".
+  No se ha tocado.
+- BUG REAL — el botón CTA de teléfono no tenía icono, a diferencia del
+  de WhatsApp. Añadido (verificado con cuidado el cierre de las
+  etiquetas </a>: 21 aperturas / 21 cierres).
+- BUG REAL — la casilla de política de privacidad existía pero el
+  texto no enlazaba a ningún sitio. Añadido el enlace estándar de la
+  familia a https://kelatos.com/privacy-policy/, resaltado en azul
+  (#0758a8, ya que la paleta de esta web es roja/naranja, sin ningún
+  tono azul existente que reutilizar).
+- Añadido "Sábados, domingos y días festivos estamos cerrados" debajo
+  del horario.
+- No se ha añadido franja de aviso de servicio técnico independiente:
+  no aplica a este negocio (alquiler/renting de equipos, sin el
+  enfoque de reparación de marcas concretas del resto de la familia).
+- Verificado sin bugs: no existe ninguna etiqueta rotada tipo
+  hero-chip; el ticker ".hero:before" ya se ocultaba correctamente en
+  móvil y no hay ningún otro texto decorativo gigante; Cal.com ya
+  estaba presente; schema.org ya usaba correctamente el único
+  teléfono de este repo; formulario correctamente conectado a
+  /api/contacto.
 - H1 de portada reescrito, corto, directo y totalmente afirmativo
   (sin interrogación ni condicionales): "Necesitas un ordenador ya.
   Aquí te lo entregamos hoy mismo." Tamaño del H1 aumentado:
