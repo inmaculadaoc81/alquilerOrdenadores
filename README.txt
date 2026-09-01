@@ -66,3 +66,30 @@ REVISIÓN ADICIONAL (checklist unificado de la familia, a petición del cliente)
   (sin interrogación ni condicionales): "Necesitas un ordenador ya.
   Aquí te lo entregamos hoy mismo." Tamaño del H1 aumentado:
   clamp(38-54px) → clamp(46-72px) en escritorio, 38px → 46px en móvil.
+
+REVISIÓN ADICIONAL (checklist unificado de la familia, a petición del cliente — repo 36/48):
+- BUG REAL — enlace de Cal.com desactualizado. Actualizado a
+  https://cal.com/kelatos/30min?embed=true&theme=light&attendeePhoneNumber=%2B34&overlayCalendar=true.
+- Verificado: el correo soporte@kelatos.com no aparece visible.
+- BUG REAL — el mensaje prellenado de WhatsApp decía "¡Hola Kelatos!"
+  en los 5 enlaces de WhatsApp de la página. Corregido a "¡Hola
+  AlquilerOrdenadores!" en todos.
+- Verificado: el menú móvil ya se cerraba correctamente al pulsar un
+  enlace.
+- Verificado: sin iconos ni imágenes con proporciones fijas
+  incorrectas.
+- BUG REAL — el H1 en móvil estaba en 46px. Corregido a 48px.
+- BUG REAL — botones del hero (.cta) con border-radius de 14px y sin
+  estado hover. Aumentado a border-radius:999px; añadido
+  filter:brightness(.88) en wa/pickup (colores sólidos) y relleno
+  sólido con var(--navy) + texto blanco en el botón de teléfono
+  (estilo contorno) al pasar el ratón.
+- BUG REAL — la franja de insignias (3 badges: "Por día, semana o
+  mes" / "Windows, Surface y Mac" / "Equipos formateados y
+  actualizados") estaba colocada directamente debajo del H1, dentro
+  del hero, mismo patrón detectado en DyFix. Movida a su propia franja
+  (.badges-strip) justo debajo del hero, en grid de 4 columnas en
+  escritorio y 2 en móvil.
+- No se ha añadido franja de aviso de servicio técnico independiente:
+  no aplica a este negocio (alquiler y renting de equipos, sin el
+  enfoque de reparación del resto de la familia).
