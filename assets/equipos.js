@@ -66,7 +66,6 @@
       contenedor.innerHTML = equipos.map(tarjeta).join("");
     })
     .catch(function () {
-      var bloque = document.getElementById("equipos-disponibles-ahora");
-      if (bloque) bloque.style.display = "none";
+      contenedor.innerHTML = '<p class="equipos-vacio">No hemos podido cargar la disponibilidad ahora mismo. Escríbenos y te la confirmamos al momento.</p>';
     });
 })();
