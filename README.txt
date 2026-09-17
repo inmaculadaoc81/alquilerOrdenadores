@@ -93,3 +93,24 @@ REVISIÓN ADICIONAL (checklist unificado de la familia, a petición del cliente 
 - No se ha añadido franja de aviso de servicio técnico independiente:
   no aplica a este negocio (alquiler y renting de equipos, sin el
   enfoque de reparación del resto de la familia).
+
+AJUSTE DE TÍTULOS DEL MENÚ (a petición del cliente): el menú tenía dos
+enlaces cuyo texto no dejaba claro qué era cada uno:
+- "Equipos" apuntaba a #equipos, una sección de la Home que solo
+  muestra las categorías (PC/Windows, Surface, Mac), no el inventario
+  real.
+- "Disponibilidad" apuntaba a /equipos-disponibles, que es la tienda
+  real donde se ve el stock disponible ahora mismo — pero el nombre
+  "Disponibilidad" no comunicaba que ahí estaba la tienda.
+
+Renombrados en el menú de ambas páginas (index.html y
+equipos-disponibles.html, que comparten el mismo <nav>):
+- "Equipos" → "Tipos de equipo" (refleja que es solo el resumen de
+  categorías).
+- "Disponibilidad" → "Equipos disponibles" (coincide con el H1 de esa
+  página, "Equipos disponibles ahora mismo", y con el texto del botón
+  CTA que ya usaba esa misma frase en la Home — queda consistente en
+  todo el sitio).
+
+No se ha tocado ningún destino (href), solo el texto visible de los
+enlaces.
