@@ -120,3 +120,10 @@ va primero, seguido de "Precios" y el resto en el mismo orden que
 tenía. Aplicado en las dos páginas que comparten el <nav>
 (index.html y equipos-disponibles.html). Solo se reordenaron los
 enlaces, sin tocar destinos ni texto.
+
+DESTACADO DEL ENLACE "EQUIPOS DISPONIBLES" (a petición del cliente):
+como ahora es el primer enlace del menú, se le añadió un fondo de
+color para que resalte del resto — píldora rellena en el rojo de
+marca (--red, #ec1b08, el mismo que ya usa el botón "Ver equipos
+disponibles ahora mismo" del home), con oscurecimiento sutil al pasar
+el ratón. Aplicado en las dos páginas que comparten el <nav>.
