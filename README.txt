@@ -114,3 +114,9 @@ equipos-disponibles.html, que comparten el mismo <nav>):
 
 No se ha tocado ningún destino (href), solo el texto visible de los
 enlaces.
+
+ORDEN DEL MENÚ (a petición del cliente): "Equipos disponibles" ahora
+va primero, seguido de "Precios" y el resto en el mismo orden que
+tenía. Aplicado en las dos páginas que comparten el <nav>
+(index.html y equipos-disponibles.html). Solo se reordenaron los
+enlaces, sin tocar destinos ni texto.
