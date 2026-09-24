@@ -2,7 +2,7 @@
   // Lee el inventario real de equipos disponibles directamente del
   // dashboard de Kelatos (kelatos-rep-back) — solo equipos activos y en
   // estado DISPONIBLE, sin ningún dato de quién los tiene alquilados.
-  var ENDPOINT = "https://makeup-reef-raymond-holes.trycloudflare.com/publico/equipos-alquiler";
+  var ENDPOINT = "https://db.affirmatechnology.com/kelatos-api/publico/equipos-alquiler";
 
   var contenedor = document.getElementById("equipos-lista");
   var buscador = document.getElementById("equipos-buscador");
