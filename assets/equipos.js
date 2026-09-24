@@ -5,7 +5,11 @@
   var ENDPOINT = "https://makeup-reef-raymond-holes.trycloudflare.com/publico/equipos-alquiler";
 
   var contenedor = document.getElementById("equipos-lista");
+  var buscador = document.getElementById("equipos-buscador");
+  var marcas = document.getElementById("equipos-marca");
   if (!contenedor) return;
+
+  var todosEquipos = [];
 
   var ETIQUETA_TIPO = { Portatil: "Portátil", Normal: "Sobremesa" };
 
@@ -52,6 +56,36 @@
     );
   }
 
+  function normalizar(s) {
+    return String(s == null ? "" : s).toLocaleLowerCase("es").normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  }
+
+  function render() {
+    var texto = normalizar(buscador ? buscador.value : "");
+    var marca = marcas ? marcas.value : "";
+    var filtrados = todosEquipos.filter(function (e) {
+      var coincideMarca = !marca || String(e.marca || "") === marca;
+      var coincideTexto = !texto || normalizar([e.marca, e.modelo, e.tipo].filter(Boolean).join(" ")).indexOf(texto) !== -1;
+      return coincideMarca && coincideTexto;
+    });
+    contenedor.innerHTML = filtrados.length
+      ? filtrados.map(tarjeta).join("")
+      : '<p class="equipos-vacio">No encontramos equipos que coincidan con tu búsqueda.</p>';
+  }
+
+  function prepararFiltros() {
+    if (marcas) {
+      var lista = todosEquipos.map(function (e) { return String(e.marca || "").trim(); }).filter(Boolean)
+        .filter(function (m, i, a) { return a.indexOf(m) === i; })
+        .sort(function (a, b) { return a.localeCompare(b, "es", { sensitivity: "base" }); });
+      marcas.innerHTML = '<option value="">Todas las marcas</option>' + lista.map(function (m) {
+        return '<option value="' + escapeHtml(m) + '">' + escapeHtml(m) + "</option>";
+      }).join("");
+    }
+    if (buscador) buscador.addEventListener("input", render);
+    if (marcas) marcas.addEventListener("change", render);
+  }
+
   fetch(ENDPOINT, { cache: "no-store" })
     .then(function (r) {
       if (!r.ok) throw new Error("HTTP " + r.status);
@@ -63,7 +97,9 @@
         contenedor.innerHTML = '<p class="equipos-vacio">Ahora mismo no tenemos equipos libres, pero rotamos el stock constantemente. Escríbenos y te avisamos en cuanto haya disponibilidad.</p>';
         return;
       }
-      contenedor.innerHTML = equipos.map(tarjeta).join("");
+      todosEquipos = equipos;
+      prepararFiltros();
+      render();
     })
     .catch(function () {
       contenedor.innerHTML = '<p class="equipos-vacio">No hemos podido cargar la disponibilidad ahora mismo. Escríbenos y te la confirmamos al momento.</p>';
