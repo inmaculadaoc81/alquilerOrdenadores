@@ -24,12 +24,12 @@ section{padding:80px 0}.title{font-size:clamp(32px,4vw,49px);line-height:1.06;le
 .equipo-body{padding:18px 20px 6px;flex:1}
 .equipo-tipo{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;font-weight:900;color:var(--red)}
 .equipo-nombre{font-size:19px;margin:6px 0 8px;line-height:1.25}
-.equipo-caracteristicas{font-size:12px;line-height:1.5;color:var(--muted);margin:0 0 12px;padding:9px 10px;background:#f5f7f9;border-radius:12px;display:grid;gap:4px}.equipo-caracteristicas b{color:var(--ink)}.equipo-caracteristica-icono{display:inline-block;width:20px}
+.equipo-caracteristicas{font-size:12px;line-height:1.5;color:var(--muted);margin:0 0 12px;padding:9px 10px;background:#f5f7f9;border-radius:12px;display:grid;gap:4px}.equipo-caracteristicas b{color:var(--ink)}
 .equipo-precios{display:flex;flex-wrap:wrap;gap:6px 14px;color:var(--muted);font-size:14px;padding-bottom:14px}
 .equipo-precios b{color:var(--ink);font-size:16px}
 .equipo-alquiler-opciones{display:grid;grid-template-columns:1fr;gap:8px;padding:0 0 14px}
 .equipo-alquiler-btn{display:flex;align-items:center;justify-content:space-between;gap:10px;border:1px solid var(--orange);border-radius:999px;padding:10px 14px;color:#fff;background:var(--orange);font-size:13px;font-weight:900;transition:.2s ease}
-.equipo-alquiler-btn span{white-space:nowrap;background:#fff;color:var(--orange);border-radius:999px;padding:4px 8px;font-size:12px}
+.equipo-alquiler-btn span{white-space:nowrap;background:#fff;color:#111923;border-radius:999px;padding:4px 8px;font-size:12px}
 .equipo-alquiler-btn:hover{background:#111923;border-color:#111923;color:#fff;transform:translateY(-1px)}
 .equipo-alquiler-btn:hover span{background:#fff;color:#111923}
 .equipo-btn{display:block;text-align:center;background:var(--red);color:#fff;padding:12px;font-size:15px;font-weight:950}
