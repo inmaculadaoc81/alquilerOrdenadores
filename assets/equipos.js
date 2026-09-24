@@ -82,18 +82,20 @@
       }).join("") + '</div>';
     }
 
+    var caracteristicas = e.caracteristicas
+      ? '<div class="equipo-caracteristicas">' + escapeHtml(e.caracteristicas) + "</div>"
+      : "";
+
     return (
       '<article class="equipo-card">' +
       imagen +
       '<div class="equipo-body">' +
       tipo +
       '<h4 class="equipo-nombre">' + escapeHtml(nombre) + "</h4>" +
+      caracteristicas +
       '<div class="equipo-precios">' + precios + "</div>" +
       botonesAlquiler +
       "</div>" +
-      '<a class="equipo-btn" href="https://api.whatsapp.com/send?phone=34649970128&text=' +
-      encodeURIComponent("¡Hola! Me interesa alquilar el " + nombre) +
-      '" target="_blank">Solicitar por WhatsApp</a>' +
       "</article>"
     );
   }
