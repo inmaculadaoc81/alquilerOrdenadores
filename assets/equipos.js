@@ -60,14 +60,6 @@
       ? '<img class="equipo-img" src="' + escapeHtml(e.imagen_url) + '" alt="' + escapeHtml(nombre) + '" loading="lazy">'
       : '<div class="equipo-img-placeholder" aria-hidden="true">AO</div>';
     var tipo = e.tipo ? '<div class="equipo-tipo">' + escapeHtml(ETIQUETA_TIPO[e.tipo] || e.tipo) + "</div>" : "";
-    var precios = ["dia", "semanal", "mensual"]
-      .map(function (clave) {
-        var precio = euros(e[clave]);
-        if (!precio) return "";
-        var etiqueta = clave === "dia" ? "día" : clave === "semanal" ? "semana" : "mes";
-        return '<span><b>' + precio + '</b> /' + etiqueta + "</span>";
-      })
-      .join("");
     var links = ENLACES_ALQUILER[String(e.id_equipo || "").trim()];
     var botonesAlquiler = "";
     if (links && links.length === 3) {
@@ -82,8 +74,27 @@
       }).join("") + '</div>';
     }
 
+    function detalleCaracteristicas(valor) {
+      if (!valor) return "";
+      return String(valor).split(",").map(function (parte) {
+        var dato = parte.trim();
+        if (!dato) return "";
+        var etiqueta = "Característica";
+        var icono = "•";
+        if (/\b(i[3579]-?\d|ryzen|celeron|pentium|core\s+i[3579]|amd\s+ryzen)\b/i.test(dato)) {
+          etiqueta = "Procesador"; icono = "⚙️";
+          if (/^i[3579]-?\d/i.test(dato)) dato = "Intel Core " + dato;
+        } else if (/\bram\b/i.test(dato)) {
+          etiqueta = "RAM"; icono = "🧠";
+          dato = dato.replace(/\bram\s*/i, "").trim();
+        } else if (/\b(ssd|hdd|m\.2|nvme|disco|almacenamiento)\b/i.test(dato)) {
+          etiqueta = "Almacenamiento"; icono = "💾";
+        }
+        return '<div><span class="equipo-caracteristica-icono">' + icono + '</span><b>' + etiqueta + ':</b> ' + escapeHtml(dato) + '</div>';
+      }).join("");
+    }
     var caracteristicas = e.caracteristicas
-      ? '<div class="equipo-caracteristicas">' + escapeHtml(e.caracteristicas) + "</div>"
+      ? '<div class="equipo-caracteristicas">' + detalleCaracteristicas(e.caracteristicas) + "</div>"
       : "";
 
     return (
@@ -93,7 +104,6 @@
       tipo +
       '<h4 class="equipo-nombre">' + escapeHtml(nombre) + "</h4>" +
       caracteristicas +
-      '<div class="equipo-precios">' + precios + "</div>" +
       botonesAlquiler +
       "</div>" +
       "</article>"
