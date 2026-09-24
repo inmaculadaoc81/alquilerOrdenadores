@@ -76,21 +76,20 @@
 
     function detalleCaracteristicas(valor) {
       if (!valor) return "";
-      return String(valor).split(",").map(function (parte) {
+      return String(valor).split(",").map(function (parte, indice) {
         var dato = parte.trim();
         if (!dato) return "";
-        var etiqueta = "Característica";
-        var icono = "•";
-        if (/\b(i[3579]-?\d|ryzen|celeron|pentium|core\s+i[3579]|amd\s+ryzen)\b/i.test(dato)) {
-          etiqueta = "Procesador"; icono = "⚙️";
+        var etiqueta = "";
+        if (/\b(i[3579]-?\d|ryzen|celeron|pentium|core\s+i[3579]|amd\s+ryzen)\b/i.test(dato) || indice === 0) {
+          etiqueta = "Procesador";
           if (/^i[3579]-?\d/i.test(dato)) dato = "Intel Core " + dato;
         } else if (/\bram\b/i.test(dato)) {
-          etiqueta = "RAM"; icono = "🧠";
+          etiqueta = "RAM";
           dato = dato.replace(/\bram\s*/i, "").trim();
         } else if (/\b(ssd|hdd|m\.2|nvme|disco|almacenamiento)\b/i.test(dato)) {
-          etiqueta = "Almacenamiento"; icono = "💾";
+          etiqueta = "Almacenamiento";
         }
-        return '<div><span class="equipo-caracteristica-icono">' + icono + '</span><b>' + etiqueta + ':</b> ' + escapeHtml(dato) + '</div>';
+        return '<div>' + (etiqueta ? '<b>' + etiqueta + ':</b> ' : '') + escapeHtml(dato) + '</div>';
       }).join("");
     }
     var caracteristicas = e.caracteristicas
