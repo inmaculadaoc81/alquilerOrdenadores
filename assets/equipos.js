@@ -104,7 +104,11 @@
       var href = linksEspecificos && linksEspecificos[i] ? linksEspecificos[i] : enlaceGeneral(p.periodo, p.valor);
       return { texto: p.texto, precio: p.precio, href: href, fallback: !(linksEspecificos && linksEspecificos[i]) };
     }).filter(function (p) { return !!p.href; });
-    var fianza = enlaceFianza(e);\n    var botonesAlquiler = opciones.length ? '<div class="equipo-alquiler-opciones">' + opciones.map(function (p) {\n      return '<a class="equipo-alquiler-btn' + (p.fallback ? ' equipo-alquiler-btn-general' : '') + '" href="' + escapeHtml(p.href) + '" target="_blank" rel="noopener noreferrer">' +\n        escapeHtml(p.texto) + (p.precio ? '<span>' + escapeHtml(p.precio) + '<em class="iva"> + IVA</em></span>' : '') + '</a>';\n    }).join("") + (fianza ? '<a class="equipo-fianza-btn" href="' + escapeHtml(fianza) + '" target="_blank" rel="noopener noreferrer">Pagar fianza del portátil</a>' : '') + '</div>' : "";
+    var fianza = enlaceFianza(e);
+    var botonesAlquiler = opciones.length ? '<div class="equipo-alquiler-opciones">' + opciones.map(function (p) {
+      return '<a class="equipo-alquiler-btn' + (p.fallback ? ' equipo-alquiler-btn-general' : '') + '" href="' + escapeHtml(p.href) + '" target="_blank" rel="noopener noreferrer">' +
+        escapeHtml(p.texto) + (p.precio ? '<span>' + escapeHtml(p.precio) + '<em class="iva"> + IVA</em></span>' : '') + '</a>';
+    }).join("") + (fianza ? '<a class="equipo-fianza-btn" href="' + escapeHtml(fianza) + '" target="_blank" rel="noopener noreferrer">Pagar fianza del portátil</a>' : '') + '</div>' : "";
 
     function detalleCaracteristicas(valor) {
       if (!valor) return "";
