@@ -83,7 +83,7 @@
 
   function marcaCanonica(marca) {
     var original = String(marca || "").trim();
-    var clave = normalizar(original);
+    var clave = original.toLocaleLowerCase("es").normalize("NFD").replace(/[\u0300-\u036f]/g, "");
     var conocidas = { hp: "HP", msi: "MSI", acer: "Acer", apple: "Apple", dell: "Dell", lenovo: "Lenovo", toshiba: "Toshiba", asus: "ASUS", microsoft: "Microsoft", surface: "Surface", gigabyte: "Gigabyte" };
     return conocidas[clave] || original;
   }
