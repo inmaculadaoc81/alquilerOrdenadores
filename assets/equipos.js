@@ -81,13 +81,6 @@
     return v.toLocaleString("es-ES", { minimumFractionDigits: 0, maximumFractionDigits: 2 }) + "€";
   }
 
-  function marcaCanonica(marca) {
-    var original = String(marca || "").trim();
-    var clave = original.toLocaleLowerCase("es").normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-    var conocidas = { hp: "HP", msi: "MSI", acer: "Acer", apple: "Apple", dell: "Dell", lenovo: "Lenovo", toshiba: "Toshiba", asus: "ASUS", microsoft: "Microsoft", surface: "Surface", gigabyte: "Gigabyte" };
-    return conocidas[clave] || original;
-  }
-
   function enlaceFianza(e) {
     var d = Number(e.dia), s = Number(e.semanal), m = Number(e.mensual);
     if (d === 10 && s === 50 && m === 150) return "https://sis.redsys.es/tiendaWeb/item/NDk4OzY=";
@@ -96,7 +89,7 @@
   }
 
   function tarjeta(e) {
-    var nombre = [marcaCanonica(e.marca), e.modelo].filter(Boolean).join(" ");
+    var nombre = [e.marca, e.modelo].filter(Boolean).join(" ");
     var imagen = e.imagen_url
       ? '<img class="equipo-img" src="' + escapeHtml(e.imagen_url) + '" alt="' + escapeHtml(nombre) + '" loading="lazy">'
       : '<div class="equipo-img-placeholder" aria-hidden="true">AO</div>';
@@ -156,7 +149,7 @@
     var texto = normalizar(buscador ? buscador.value : "");
     var marca = marcas ? marcas.value : "";
     var filtrados = todosEquipos.filter(function (e) {
-      var coincideMarca = !marca || marcaCanonica(e.marca) === marca;
+      var coincideMarca = !marca || String(e.marca || "") === marca;
       var coincideTexto = !texto || normalizar([e.marca, e.modelo, e.tipo].filter(Boolean).join(" ")).indexOf(texto) !== -1;
       return coincideMarca && coincideTexto;
     });
@@ -167,7 +160,7 @@
 
   function prepararFiltros() {
     if (marcas) {
-      var lista = todosEquipos.map(function (e) { return marcaCanonica(e.marca); }).filter(Boolean)
+      var lista = todosEquipos.map(function (e) { return String(e.marca || "").trim(); }).filter(Boolean)
         .filter(function (m, i, a) { return a.indexOf(m) === i; })
         .sort(function (a, b) { return a.localeCompare(b, "es", { sensitivity: "base" }); });
       marcas.innerHTML = '<option value="">Todas las marcas</option>' + lista.map(function (m) {
