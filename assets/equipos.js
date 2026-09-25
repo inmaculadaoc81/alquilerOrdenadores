@@ -74,7 +74,7 @@
       ];
       botonesAlquiler = '<div class="equipo-alquiler-opciones">' + periodos.map(function (p, i) {
         return '<a class="equipo-alquiler-btn" href="' + escapeHtml(links[i]) + '" target="_blank" rel="noopener noreferrer">' +
-          escapeHtml(p.texto) + (p.precio ? '<span>' + escapeHtml(p.precio) + '</span>' : '') + '</a>';
+          escapeHtml(p.texto) + (p.precio ? '<span>' + escapeHtml(p.precio) + '<em class="iva"> + IVA</em></span>' : '') + '</a>';
       }).join("") + '</div>';
     }
 
