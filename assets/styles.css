@@ -31,6 +31,9 @@ section{padding:80px 0}.title{font-size:clamp(32px,4vw,49px);line-height:1.06;le
 .equipo-alquiler-btn{display:flex;align-items:center;justify-content:space-between;gap:10px;border:1px solid var(--orange);border-radius:999px;padding:10px 14px;color:#fff;background:var(--orange);font-size:13px;font-weight:900;transition:.2s ease}
 .equipo-alquiler-btn span{white-space:nowrap;background:#fff;color:#111923;border-radius:999px;padding:4px 8px;font-size:12px}
 .equipo-alquiler-btn:hover{background:#111923;border-color:#111923;color:#fff;transform:translateY(-1px)}
+.equipo-alquiler-btn-general{background:var(--green);border-color:var(--green)}
+.equipo-alquiler-btn-general:hover{background:#169c49;border-color:#169c49;color:#fff;transform:translateY(-1px)}
+
 .equipo-alquiler-btn:hover span{background:#fff;color:#111923}
 .equipo-alquiler-btn span .iva{font-style:normal;font-weight:700;font-size:10px;color:#5b6570}
 .equipo-btn{display:block;text-align:center;background:var(--red);color:#fff;padding:12px;font-size:15px;font-weight:950}
