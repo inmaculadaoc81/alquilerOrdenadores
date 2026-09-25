@@ -81,8 +81,22 @@
     return v.toLocaleString("es-ES", { minimumFractionDigits: 0, maximumFractionDigits: 2 }) + "€";
   }
 
+  function marcaCanonica(marca) {
+    var original = String(marca || "").trim();
+    var clave = normalizar(original);
+    var conocidas = { hp: "HP", msi: "MSI", acer: "Acer", apple: "Apple", dell: "Dell", lenovo: "Lenovo", toshiba: "Toshiba", asus: "ASUS", microsoft: "Microsoft", surface: "Surface", gigabyte: "Gigabyte" };
+    return conocidas[clave] || original;
+  }
+
+  function enlaceFianza(e) {
+    var d = Number(e.dia), s = Number(e.semanal), m = Number(e.mensual);
+    if (d === 10 && s === 50 && m === 150) return "https://sis.redsys.es/tiendaWeb/item/NDk4OzY=";
+    if (d === 20 && s === 80 && m === 240) return "https://sis.redsys.es/tiendaWeb/item/NDk4Ozg=";
+    return null;
+  }
+
   function tarjeta(e) {
-    var nombre = [e.marca, e.modelo].filter(Boolean).join(" ");
+    var nombre = [marcaCanonica(e.marca), e.modelo].filter(Boolean).join(" ");
     var imagen = e.imagen_url
       ? '<img class="equipo-img" src="' + escapeHtml(e.imagen_url) + '" alt="' + escapeHtml(nombre) + '" loading="lazy">'
       : '<div class="equipo-img-placeholder" aria-hidden="true">AO</div>';
@@ -97,10 +111,7 @@
       var href = linksEspecificos && linksEspecificos[i] ? linksEspecificos[i] : enlaceGeneral(p.periodo, p.valor);
       return { texto: p.texto, precio: p.precio, href: href, fallback: !(linksEspecificos && linksEspecificos[i]) };
     }).filter(function (p) { return !!p.href; });
-    var botonesAlquiler = opciones.length ? '<div class="equipo-alquiler-opciones">' + opciones.map(function (p) {
-      return '<a class="equipo-alquiler-btn' + (p.fallback ? ' equipo-alquiler-btn-general' : '') + '" href="' + escapeHtml(p.href) + '" target="_blank" rel="noopener noreferrer">' +
-        escapeHtml(p.texto) + (p.precio ? '<span>' + escapeHtml(p.precio) + '<em class="iva"> + IVA</em></span>' : '') + '</a>';
-    }).join("") + '</div>' : "";
+    var fianza = enlaceFianza(e);\n    var botonesAlquiler = opciones.length ? '<div class="equipo-alquiler-opciones">' + opciones.map(function (p) {\n      return '<a class="equipo-alquiler-btn' + (p.fallback ? ' equipo-alquiler-btn-general' : '') + '" href="' + escapeHtml(p.href) + '" target="_blank" rel="noopener noreferrer">' +\n        escapeHtml(p.texto) + (p.precio ? '<span>' + escapeHtml(p.precio) + '<em class="iva"> + IVA</em></span>' : '') + '</a>';\n    }).join("") + (fianza ? '<a class="equipo-fianza-btn" href="' + escapeHtml(fianza) + '" target="_blank" rel="noopener noreferrer">Pagar fianza del portátil</a>' : '') + '</div>' : "";
 
     function detalleCaracteristicas(valor) {
       if (!valor) return "";
@@ -145,7 +156,7 @@
     var texto = normalizar(buscador ? buscador.value : "");
     var marca = marcas ? marcas.value : "";
     var filtrados = todosEquipos.filter(function (e) {
-      var coincideMarca = !marca || String(e.marca || "") === marca;
+      var coincideMarca = !marca || marcaCanonica(e.marca) === marca;
       var coincideTexto = !texto || normalizar([e.marca, e.modelo, e.tipo].filter(Boolean).join(" ")).indexOf(texto) !== -1;
       return coincideMarca && coincideTexto;
     });
@@ -156,7 +167,7 @@
 
   function prepararFiltros() {
     if (marcas) {
-      var lista = todosEquipos.map(function (e) { return String(e.marca || "").trim(); }).filter(Boolean)
+      var lista = todosEquipos.map(function (e) { return marcaCanonica(e.marca); }).filter(Boolean)
         .filter(function (m, i, a) { return a.indexOf(m) === i; })
         .sort(function (a, b) { return a.localeCompare(b, "es", { sensitivity: "base" }); });
       marcas.innerHTML = '<option value="">Todas las marcas</option>' + lista.map(function (m) {
