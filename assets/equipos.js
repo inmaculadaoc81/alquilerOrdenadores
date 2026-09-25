@@ -36,8 +36,12 @@
     "EQ-017": ["https://sis.redsys.es/tiendaWeb/item/NTY3OzYy", "https://sis.redsys.es/tiendaWeb/item/NTY3OzYz", "https://sis.redsys.es/tiendaWeb/item/NTY3OzY0"],
     "EQ-018": ["https://sis.redsys.es/tiendaWeb/item/NTY3OzY1", "https://sis.redsys.es/tiendaWeb/item/NTY3OzY2", "https://sis.redsys.es/tiendaWeb/item/NTY3OzY3"],
     "EQ-019": ["https://sis.redsys.es/tiendaWeb/item/NTY3OzY4", "https://sis.redsys.es/tiendaWeb/item/NTY3OzY5", "https://sis.redsys.es/tiendaWeb/item/NTY3Ozcw"],
+    "EQ-020": ["https://sis.redsys.es/tiendaWeb/item/NTY3Ozc3", "https://sis.redsys.es/tiendaWeb/item/NTY3Ozc4", "https://sis.redsys.es/tiendaWeb/item/NTY3Ozc5"],
     "EQ-021": ["https://sis.redsys.es/tiendaWeb/item/NTY3Ozcx", "https://sis.redsys.es/tiendaWeb/item/NTY3Ozcy", "https://sis.redsys.es/tiendaWeb/item/NTY3Ozcz"],
-    "EQ-025": ["https://sis.redsys.es/tiendaWeb/item/NTY3Ozc0", "https://sis.redsys.es/tiendaWeb/item/NTY3Ozc1", "https://sis.redsys.es/tiendaWeb/item/NTY3Ozc2"]
+    "EQ-022": ["https://sis.redsys.es/tiendaWeb/item/NTY3Ozgw", "https://sis.redsys.es/tiendaWeb/item/NTY3Ozgx", "https://sis.redsys.es/tiendaWeb/item/NTY3Ozgy"],
+    "EQ-023": ["https://sis.redsys.es/tiendaWeb/item/NTY3Ozg0", "https://sis.redsys.es/tiendaWeb/item/NTY3Ozg1", "https://sis.redsys.es/tiendaWeb/item/NTY3Ozg2"],
+    "EQ-025": ["https://sis.redsys.es/tiendaWeb/item/NTY3Ozc0", "https://sis.redsys.es/tiendaWeb/item/NTY3Ozc1", "https://sis.redsys.es/tiendaWeb/item/NTY3Ozc2"],
+    "EQ-026": ["https://sis.redsys.es/tiendaWeb/item/NTY3Ozg3", "https://sis.redsys.es/tiendaWeb/item/NTY3Ozg4", "https://sis.redsys.es/tiendaWeb/item/NTY3Ozg5"]
   };
 
   function escapeHtml(s) {
