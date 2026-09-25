@@ -44,6 +44,29 @@
     "EQ-026": ["https://sis.redsys.es/tiendaWeb/item/NTY3Ozg3", "https://sis.redsys.es/tiendaWeb/item/NTY3Ozg4", "https://sis.redsys.es/tiendaWeb/item/NTY3Ozg5"]
   };
 
+  // Enlaces generales Redsys para equipos nuevos sin enlaces específicos.
+  // Se seleccionan por el precio configurado en cada periodo.
+  var ENLACES_GENERALES_POR_PRECIO = {
+    dia: {
+      "10": "https://sis.redsys.es/tiendaWeb/item/NTY3Ozk2",
+      "20": "https://sis.redsys.es/tiendaWeb/item/NTY3Ozkz"
+    },
+    semanal: {
+      "50": "https://sis.redsys.es/tiendaWeb/item/NTY3Ozkx",
+      "80": "https://sis.redsys.es/tiendaWeb/item/NTY3Ozk0"
+    },
+    mensual: {
+      "150": "https://sis.redsys.es/tiendaWeb/item/NTY3Ozky",
+      "240": "https://sis.redsys.es/tiendaWeb/item/NTY3Ozk1"
+    }
+  };
+
+  function enlaceGeneral(periodo, precio) {
+    var n = Number(precio);
+    if (!isFinite(n)) return null;
+    return ENLACES_GENERALES_POR_PRECIO[periodo][String(n)] || null;
+  }
+
   function escapeHtml(s) {
     return String(s == null ? "" : s)
       .replace(/&/g, "&amp;")
@@ -64,19 +87,20 @@
       ? '<img class="equipo-img" src="' + escapeHtml(e.imagen_url) + '" alt="' + escapeHtml(nombre) + '" loading="lazy">'
       : '<div class="equipo-img-placeholder" aria-hidden="true">AO</div>';
     var tipo = e.tipo ? '<div class="equipo-tipo">' + escapeHtml(ETIQUETA_TIPO[e.tipo] || e.tipo) + "</div>" : "";
-    var links = ENLACES_ALQUILER[String(e.id_equipo || "").trim()];
-    var botonesAlquiler = "";
-    if (links && links.length === 3) {
-      var periodos = [
-        { texto: "Alquilar 1 día", precio: euros(e.dia) },
-        { texto: "Alquilar 1 semana", precio: euros(e.semanal) },
-        { texto: "Alquilar 1 mes", precio: euros(e.mensual) }
-      ];
-      botonesAlquiler = '<div class="equipo-alquiler-opciones">' + periodos.map(function (p, i) {
-        return '<a class="equipo-alquiler-btn" href="' + escapeHtml(links[i]) + '" target="_blank" rel="noopener noreferrer">' +
-          escapeHtml(p.texto) + (p.precio ? '<span>' + escapeHtml(p.precio) + '<em class="iva"> + IVA</em></span>' : '') + '</a>';
-      }).join("") + '</div>';
-    }
+    var linksEspecificos = ENLACES_ALQUILER[String(e.id_equipo || "").trim()];
+    var periodos = [
+      { texto: "Alquilar 1 día", precio: euros(e.dia), valor: e.dia, periodo: "dia" },
+      { texto: "Alquilar 1 semana", precio: euros(e.semanal), valor: e.semanal, periodo: "semanal" },
+      { texto: "Alquilar 1 mes", precio: euros(e.mensual), valor: e.mensual, periodo: "mensual" }
+    ];
+    var opciones = periodos.map(function (p, i) {
+      var href = linksEspecificos && linksEspecificos[i] ? linksEspecificos[i] : enlaceGeneral(p.periodo, p.valor);
+      return { texto: p.texto, precio: p.precio, href: href, fallback: !(linksEspecificos && linksEspecificos[i]) };
+    }).filter(function (p) { return !!p.href; });
+    var botonesAlquiler = opciones.length ? '<div class="equipo-alquiler-opciones">' + opciones.map(function (p) {
+      return '<a class="equipo-alquiler-btn' + (p.fallback ? ' equipo-alquiler-btn-general' : '') + '" href="' + escapeHtml(p.href) + '" target="_blank" rel="noopener noreferrer">' +
+        escapeHtml(p.texto) + (p.precio ? '<span>' + escapeHtml(p.precio) + '<em class="iva"> + IVA</em></span>' : '') + '</a>';
+    }).join("") + '</div>' : "";
 
     function detalleCaracteristicas(valor) {
       if (!valor) return "";
