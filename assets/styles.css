@@ -28,7 +28,7 @@ section{padding:80px 0}.title{font-size:clamp(32px,4vw,49px);line-height:1.06;le
 .equipo-precios{display:flex;flex-wrap:wrap;gap:6px 14px;color:var(--muted);font-size:14px;padding-bottom:14px}
 .equipo-precios b{color:var(--ink);font-size:16px}
 .equipo-alquiler-opciones{display:grid;grid-template-columns:1fr;gap:8px;padding:0 0 14px}
-.equipo-alquiler-btn{display:flex;align-items:center;justify-content:space-between;gap:10px;border:1px solid var(--orange);border-radius:999px;padding:10px 14px;color:#fff;background:var(--orange);font-size:13px;font-weight:900;transition:.2s ease}
+.equipo-alquiler-btn{display:flex;align-items:center;justify-content:space-between;gap:2px;border:1px solid var(--orange);border-radius:999px;padding:10px 14px;color:#fff;background:var(--orange);font-size:13px;font-weight:900;transition:.2s ease}
 .equipo-alquiler-btn span{white-space:nowrap;background:#fff;color:#111923;border-radius:999px;padding:4px 8px;font-size:12px}
 .equipo-alquiler-btn:hover{background:#111923;border-color:#111923;color:#fff;transform:translateY(-1px)}
 .equipo-alquiler-btn-general{background:var(--green);border-color:var(--green)}
