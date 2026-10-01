@@ -6,10 +6,11 @@
 // actual (que solo tiene "/") debe redirigir a la home en vez de dar
 // un 404.
 //
-// El matcher de abajo excluye /api/* y cualquier ruta con extensión
-// (archivos estáticos: .css, .js, .svg, etc.), así que esta función
-// solo se ejecuta para rutas "de página". Si esa ruta no es la home,
-// se redirige (301) a "/".
+// El matcher de abajo excluye /api/*, /blog y /blog/* (el blog, nuevo:
+// sus páginas las sirven funciones serverless, no son "la home"), y
+// cualquier ruta con extensión (archivos estáticos: .css, .js, .svg,
+// etc.), así que esta función solo se ejecuta para rutas "de página".
+// Si esa ruta no es la home, se redirige (301) a "/".
 
 import { next } from '@vercel/functions'
 
@@ -32,5 +33,5 @@ export default function middleware(request) {
 }
 
 export const config = {
-  matcher: ['/((?!api/|.*\\..*).*)'],
+  matcher: ['/((?!api/|blog(?:/|$)|.*\\..*).*)'],
 }
