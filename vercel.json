@@ -1,6 +1,14 @@
 {
   "cleanUrls": true,
   "trailingSlash": false,
+  "redirects": [
+    { "source": "/sitemap_index.xml", "destination": "/sitemap.xml", "permanent": true },
+    { "source": "/:wp(.*-sitemap\\d*\\.xml)", "destination": "/sitemap.xml", "permanent": true },
+    { "source": "/:old(producto|categoria-producto|tienda|shop)/:rest*", "destination": "/equipos-disponibles", "permanent": true },
+    { "source": "/:old(tienda|shop|carrito|finalizar-compra|mi-cuenta)", "destination": "/equipos-disponibles", "permanent": true },
+    { "source": "/:old(category|tag|author)/:rest*", "destination": "/blog", "permanent": true },
+    { "source": "/((?!api/|blog|equipos-disponibles|assets/|sitemap\\.xml|robots\\.txt|_vercel).+)", "destination": "/", "permanent": true }
+  ],
   "rewrites": [
     { "source": "/blog", "destination": "/api/blog" },
     { "source": "/blog/:slug", "destination": "/api/blog/:slug" }
