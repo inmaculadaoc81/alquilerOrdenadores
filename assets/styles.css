@@ -83,3 +83,4 @@ footer{background:#111923;color:#fff;padding:34px 0}.footer{display:flex;justify
 .hero .pickup svg{background:#e65a0c;color:#fff}
 @media(max-width:900px){.hero:after,.hero-grid:before,.hero-grid:after{display:none}}
 .quote:hover{filter:brightness(.88)}
+.quote svg{width:20px!important;height:20px!important;max-width:20px!important;max-height:20px!important;flex:0 0 20px!important}
