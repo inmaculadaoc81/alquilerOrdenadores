@@ -89,7 +89,7 @@
   }
 
   function tarjeta(e) {
-    var nombre = [e.marca, e.modelo].filter(Boolean).join(" ");
+    var nombre = [marcaVisible[claveMarca(e.marca)] || e.marca, e.modelo].filter(Boolean).join(" ");
     var imagen = e.imagen_url
       ? '<img class="equipo-img" src="' + escapeHtml(e.imagen_url) + '" alt="' + escapeHtml(nombre) + '" loading="lazy">'
       : '<div class="equipo-img-placeholder" aria-hidden="true">AO</div>';
@@ -149,11 +149,27 @@
     return String(s == null ? "" : s).toLocaleLowerCase("es").normalize("NFD").replace(/[\u0300-\u036f]/g, "");
   }
 
+  // La marca se escribe de varias formas en el dashboard («Lenovo» / «LENOVO»): se agrupan sin distinguir mayúsculas ni tildes.
+  // Como nombre visible se prefiere la variante que no está toda en mayúsculas («Lenovo»); si solo hay una, se respeta tal cual.
+  var marcaVisible = {};
+  function claveMarca(m) { return normalizar(String(m || "").trim()); }
+  function esTodoMayusculas(t) { return t === t.toLocaleUpperCase("es") && t !== t.toLocaleLowerCase("es"); }
+  function calcularMarcas(equipos) {
+    var mapa = {};
+    equipos.forEach(function (e) {
+      var nombre = String(e.marca || "").trim();
+      var k = claveMarca(nombre);
+      if (!k) return;
+      if (!mapa[k] || (esTodoMayusculas(mapa[k]) && !esTodoMayusculas(nombre))) mapa[k] = nombre;
+    });
+    marcaVisible = mapa;
+  }
+
   function render() {
     var texto = normalizar(buscador ? buscador.value : "");
     var marca = marcas ? marcas.value : "";
     var filtrados = todosEquipos.filter(function (e) {
-      var coincideMarca = !marca || String(e.marca || "") === marca;
+      var coincideMarca = !marca || claveMarca(e.marca) === marca;
       var coincideTexto = !texto || normalizar([e.marca, e.modelo, e.tipo].filter(Boolean).join(" ")).indexOf(texto) !== -1;
       return coincideMarca && coincideTexto;
     });
@@ -162,35 +178,71 @@
       : '<p class="equipos-vacio">No encontramos equipos que coincidan con tu búsqueda.</p>';
   }
 
-  function prepararFiltros() {
-    if (marcas) {
-      var lista = todosEquipos.map(function (e) { return String(e.marca || "").trim(); }).filter(Boolean)
-        .filter(function (m, i, a) { return a.indexOf(m) === i; })
-        .sort(function (a, b) { return a.localeCompare(b, "es", { sensitivity: "base" }); });
-      marcas.innerHTML = '<option value="">Todas las marcas</option>' + lista.map(function (m) {
-        return '<option value="' + escapeHtml(m) + '">' + escapeHtml(m) + "</option>";
-      }).join("");
-    }
-    if (buscador) buscador.addEventListener("input", render);
-    if (marcas) marcas.addEventListener("change", render);
+  // Rellena el desplegable de marcas conservando la que el visitante tenía elegida (si sigue habiendo equipos de esa marca).
+  function actualizarMarcas() {
+    if (!marcas) return;
+    var elegida = marcas.value;
+    var claves = Object.keys(marcaVisible).sort(function (a, b) {
+      return marcaVisible[a].localeCompare(marcaVisible[b], "es", { sensitivity: "base" });
+    });
+    marcas.innerHTML = '<option value="">Todas las marcas</option>' + claves.map(function (k) {
+      return '<option value="' + escapeHtml(k) + '">' + escapeHtml(marcaVisible[k]) + "</option>";
+    }).join("");
+    marcas.value = marcaVisible[elegida] ? elegida : "";
   }
 
-  fetch(ENDPOINT, { cache: "no-store" })
-    .then(function (r) {
-      if (!r.ok) throw new Error("HTTP " + r.status);
-      return r.json();
-    })
-    .then(function (data) {
-      var equipos = data && data.ok && Array.isArray(data.equipos) ? data.equipos : [];
-      if (!equipos.length) {
-        contenedor.innerHTML = '<p class="equipos-vacio">Ahora mismo no tenemos equipos libres, pero rotamos el stock constantemente. Escríbenos y te avisamos en cuanto haya disponibilidad.</p>';
-        return;
-      }
-      todosEquipos = equipos;
-      prepararFiltros();
-      render();
-    })
-    .catch(function () {
-      contenedor.innerHTML = '<p class="equipos-vacio">No hemos podido cargar la disponibilidad ahora mismo. Escríbenos y te la confirmamos al momento.</p>';
-    });
+  var filtrosListos = false;
+  var huellaDatos = null;
+  var cargas = 0;
+  var ultimaCarga = 0;
+  var cargando = false;
+
+  // Lee la disponibilidad del dashboard. Se llama al abrir la página, cada minuto y al volver a la pestaña, para que un equipo recién
+  // alquilado (o puesto en mantenimiento) desaparezca, y uno devuelto reaparezca, sin recargar. Si una actualización falla, se deja lo que ya se veía.
+  function cargar(primera) {
+    if (cargando) return;
+    cargando = true;
+    fetch(ENDPOINT, { cache: "no-store" })
+      .then(function (r) {
+        if (!r.ok) throw new Error("HTTP " + r.status);
+        return r.json();
+      })
+      .then(function (data) {
+        var equipos = data && data.ok && Array.isArray(data.equipos) ? data.equipos : [];
+        ultimaCarga = Date.now();
+        cargas += 1;
+        contenedor.setAttribute("data-cargas", String(cargas));
+        var huella = JSON.stringify(equipos);
+        if (huella === huellaDatos) return; // sin cambios: no se repinta (no molesta a quien está mirando)
+        huellaDatos = huella;
+        todosEquipos = equipos;
+        if (!equipos.length) {
+          contenedor.innerHTML = '<p class="equipos-vacio">Ahora mismo no tenemos equipos libres, pero rotamos el stock constantemente. Escríbenos y te avisamos en cuanto haya disponibilidad.</p>';
+          calcularMarcas([]);
+          actualizarMarcas();
+          return;
+        }
+        calcularMarcas(equipos);
+        actualizarMarcas();
+        if (!filtrosListos) {
+          if (buscador) buscador.addEventListener("input", render);
+          if (marcas) marcas.addEventListener("change", render);
+          filtrosListos = true;
+        }
+        render();
+      })
+      .catch(function () {
+        if (primera) {
+          contenedor.innerHTML = '<p class="equipos-vacio">No hemos podido cargar la disponibilidad ahora mismo. Escríbenos y te la confirmamos al momento.</p>';
+        }
+      })
+      .then(function () { cargando = false; });
+  }
+
+  var CADA_MS = window.__EQUIPOS_REFRESCO_MS || 60000;
+  cargar(true);
+  setInterval(function () { cargar(false); }, CADA_MS);
+  document.addEventListener("visibilitychange", function () {
+    if (!document.hidden && Date.now() - ultimaCarga > 15000) cargar(false);
+  });
 })();
